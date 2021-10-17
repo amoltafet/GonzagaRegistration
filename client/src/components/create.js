@@ -1,20 +1,14 @@
 import React, { Component } from "react";
 // This will require to npm install axios
 import axios from 'axios';
-import {
-  Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button, Modal, ModalHeader
-} from 'reactstrap';
-import { Link } from "react-router-dom";
 
 const Record = (props) => (
 
   <tr>
-    <td >{props.record.courseTitle}</td>
+    <td>{props.record.courseTitle}</td>
     <td>{props.record.termDesc}</td>
     <td>{props.record.courseNumber}</td>
     <td>{props.record.subjectDescription}</td>
-    <Button>Add</Button>
     <td>
     </td>
   </tr>
@@ -39,7 +33,7 @@ const Planned = (props) => (
     <td>{props.record.termDesc}</td>
     <td>{props.record.courseNumber}</td>
     <td>{props.record.subjectDescription}</td>
-    <Button>Remove</Button>
+    
     <td>
     </td>
   </tr>
@@ -128,6 +122,12 @@ export default class RecordList extends Component {
   render() {
     return (
   <div class="container-fluid">
+            <nav class="navbar">
+            <a class="navbar-brand" href="/">
+                <img src="./img/bulldog.png" width="150" height="100" alt=""/>
+                <img src="./img/gonzaga_logo.png" width="400" height="100" alt=""/>
+            </a>
+        </nav>
     <div class="row">
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
         <div>

@@ -34,15 +34,10 @@ export default class RecordList extends Component {
   }
 
   searchOpen(){
-    axios.get("http://localhost:5000/search").then((response) => {
+    axios.get("http://localhost:5000/").then((response) => {
       console.log(response.data);
-      
-      this.setState({
-        record: response.data,
-    });
-    });
     
-    
+    });
   }
 
   // This method will delete a record based on the method
@@ -72,21 +67,27 @@ export default class RecordList extends Component {
   render() {
     return (
       <div class="outside_div">
+                <nav class="navbar">
+            <a class="navbar-brand" href="/">
+                <img src="./img/bulldog.png" width="150" height="100" alt=""/>
+                <img src="./img/gonzaga_logo.png" width="400" height="100" alt=""/>
+            </a>
+        </nav>
         <div class="row">
           <div class="col-md-3">
-            <Button onClick={this.searchOpen}>Open Courses</Button>
+    
           <input type="search" class="form-control rounded" placeholder="Search ..." aria-label="Search"></input>
-          <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Elective</li>
-          <input type="checkbox" id="topping" name="topping" value="Open" /> Open Courses 
+          <ul><input type="checkbox" id="topping" name="topping" value="Elective" /> Elective</ul>
+          <ul><input type="checkbox" id="topping" name="topping" value="Open" /> Open Courses</ul>
 
             <div class="class_times bg-primary border border-dark rounded">
               <p>Class Times</p>
-              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Monday</li>
-              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Tuesday</li>
-              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Wednesday</li>
-              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Thursday</li>
-              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Friday</li>
-              <button></button>
+              <ul><input type="checkbox" id="topping" name="topping" value="Elective" /> Monday</ul>
+              <ul><input type="checkbox" id="topping" name="topping" value="Elective" /> Tuesday</ul>
+              <ul><input type="checkbox" id="topping" name="topping" value="Elective" /> Wednesday</ul>
+              <ul><input type="checkbox" id="topping" name="topping" value="Elective" /> Thursday</ul>
+              <ul><input type="checkbox" id="topping" name="topping" value="Elective" /> Friday</ul>
+              <button class="btn-light">Search</button>
             </div>
           </div>
           <div class="col-md-9">

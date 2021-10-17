@@ -32,4 +32,29 @@ span.longer-name{
     color: white;
     padding: 2em;
 }
+
+.card {
+    width: 18rem;
+}
+
+.class_name {
+    padding: 1%;
+}
+
+.registered{
+    width: 600px;
+}
   
+.outside_div{
+    align-items: center;
+}
+
+.button{
+    padding: 10px;
+}
+
+ul.no-bullets {
+    list-style-type: none; 
+    padding: 0; 
+    margin: 0; 
+  }
