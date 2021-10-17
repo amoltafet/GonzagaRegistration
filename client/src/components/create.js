@@ -1,137 +1,186 @@
 import React, { Component } from "react";
 // This will require to npm install axios
 import axios from 'axios';
- 
-export default class Create extends Component {
-  // This is the constructor that stores the data.
+import {
+  Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle, Button, Modal, ModalHeader
+} from 'reactstrap';
+import { Link } from "react-router-dom";
+
+const Record = (props) => (
+
+  <tr>
+    <td >{props.record.courseTitle}</td>
+    <td>{props.record.termDesc}</td>
+    <td>{props.record.courseNumber}</td>
+    <td>{props.record.subjectDescription}</td>
+    <Button>Add</Button>
+    <td>
+    </td>
+  </tr>
+);
+
+const Current = (props) => (
+
+  <tr className="table-success">
+    <td >{props.record.courseTitle}</td>
+    <td>{props.record.termDesc}</td>
+    <td>{props.record.courseNumber}</td>
+    <td>{props.record.subjectDescription}</td>
+    <td>
+    </td>
+  </tr>
+);
+
+const Planned = (props) => (
+
+  <tr className="table-secondary">
+    <td >{props.record.courseTitle}</td>
+    <td>{props.record.termDesc}</td>
+    <td>{props.record.courseNumber}</td>
+    <td>{props.record.subjectDescription}</td>
+    <Button>Remove</Button>
+    <td>
+    </td>
+  </tr>
+);
+
+
+export default class RecordList extends Component {
+
+  
+  // This is the constructor that shall store our data retrieved from the database
   constructor(props) {
     super(props);
- 
-    this.onChangePersonName = this.onChangePersonName.bind(this);
-    this.onChangePersonPosition = this.onChangePersonPosition.bind(this);
-    this.onChangePersonLevel = this.onChangePersonLevel.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
- 
-    this.state = {
-      person_name: "",
-      person_position: "",
-      person_level: "",
-    };
+    this.deleteRecord = this.deleteRecord.bind(this);
+    this.state = {records: [], students: [], planned: []};
   }
- 
-  // These methods will update the state properties.
-  onChangePersonName(e) {
-    this.setState({
-      person_name: e.target.value,
+
+  // This method will get the data from the database.
+  componentDidMount() {
+
+    let one = "http://localhost:5000/need/"
+    let two = "http://localhost:5000/student/"
+    let three = "http://localhost:5000/planned/"
+
+    const requestOne = axios.get(one);
+    const requestTwo = axios.get(two);
+    const requestThree = axios.get(three);
+
+    axios.all([requestOne, requestTwo, requestThree]).then(axios.spread((...responses) => {
+      this.setState({ records: responses[0].data, students: responses[1].data, planned: responses[2].data})
+      console.log(responses[2].data);
+      })).catch(function (error) {
+        console.log(error);
+      })
+  }
+
+    // This method will delete a record based on the method
+    deleteRecord(id) {
+      axios.delete("http://localhost:5000/" + id).then((response) => {
+        console.log(response.data);
+      });
+  
+      this.setState({
+        record: this.state.records.filter((el) => el._id !== id),
+      });
+    }
+
+  // This method will map out the users on the table
+  recordList() {
+    return this.state.records.map((currentrecord) => {
+      return (
+        <Record
+          record={currentrecord}
+          deleteRecord={this.deleteRecord}
+          key={currentrecord._id}
+        />
+      );
     });
   }
- 
-  onChangePersonPosition(e) {
-    this.setState({
-      person_position: e.target.value,
+
+  recordStudents() {
+    return this.state.students.map((currentrecord) => {
+      return (
+        <Current
+          record={currentrecord}
+          deleteRecord={this.deleteRecord}
+          key={currentrecord._id}
+        />
+      );
     });
   }
- 
-  onChangePersonLevel(e) {
-    this.setState({
-      person_level: e.target.value,
+
+  recordPlanned() {
+    return this.state.planned.map((currentrecord) => {
+      return (
+        <Planned
+          record={currentrecord}
+          deleteRecord={this.deleteRecord}
+          key={currentrecord._id}
+        />
+      );
     });
   }
- 
-// This function will handle the submission.
-  onSubmit(e) {
-    e.preventDefault();
- 
-    // When post request is sent to the create url, axios will add a new record(newperson) to the database.
-    const newperson = {
-      person_name: this.state.person_name,
-      person_position: this.state.person_position,
-      person_level: this.state.person_level,
-    };
- 
-    axios
-      .post("http://localhost:5000/record/add", newperson)
-      .then((res) => console.log(res.data));
- 
-    // We will empty the state after posting the data to the database
-    this.setState({
-      person_name: "",
-      person_position: "",
-      person_level: "",
-    });
-  }
- 
-  // This following section will display the form that takes the input from the user.
+
+
+  // This following section will display the table with the records of individuals.
   render() {
     return (
-      <div style={{ marginTop: 20 }}>
-        <h3>Create New Plan</h3>
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label>Name of the person: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.person_name}
-              onChange={this.onChangePersonName}
-            />
+  <div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div>
+          <h3>Courses taken</h3>
+          <table name="row" className="table table-striped" style={{ marginTop: 20 }}>
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th>Term</th>
+                <th>Course Number</th>
+                <th>Department</th>
+              </tr>
+            </thead>
+            <tbody>{this.recordStudents()}</tbody>
+          </table>
+        </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div>
+          <h3>Courses you need to take</h3>
+          <div> 
+          <table class="table  mb-0" style={{ marginTop: 20 }}>
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th>Term</th>
+                <th>Course Number</th>
+                <th>Department</th>
+              </tr>
+            </thead>
+            <tbody>{this.recordList()}</tbody>
+          </table>
           </div>
-          <div className="form-group">
-            <label>Person's position: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.person_position}
-              onChange={this.onChangePersonPosition}
-            />
-          </div>
-          <div className="form-group">
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="priorityOptions"
-                id="priorityLow"
-                value="Intern"
-                checked={this.state.person_level === "Intern"}
-                onChange={this.onChangePersonLevel}
-              />
-              <label className="form-check-label">Intern</label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="priorityOptions"
-                id="priorityMedium"
-                value="Junior"
-                checked={this.state.person_level === "Junior"}
-                onChange={this.onChangePersonLevel}
-              />
-              <label className="form-check-label">Junior</label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="priorityOptions"
-                id="priorityHigh"
-                value="Senior"
-                checked={this.state.person_level === "Senior"}
-                onChange={this.onChangePersonLevel}
-              />
-              <label className="form-check-label">Senior</label>
-            </div>
-          </div>
-          <div className="form-group">
-            <input
-              type="submit"
-              value="Create person"
-              className="btn btn-primary"
-            />
-          </div>
-        </form>
-      </div>
+        </div>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div>
+          <h3>Planned Courses</h3>
+          <table className="table table-striped" style={{ marginTop: 20 }}>
+            <thead>
+              <tr>
+                <th>Course Name</th>
+                <th>Term</th>
+                <th>Course Number</th>
+                <th>Department</th>
+              </tr>
+            </thead>
+            <tbody>{this.recordPlanned()}</tbody>
+          </table>
+        </div>
+        </div>
+    </div>
+    </div>
     );
   }
 }

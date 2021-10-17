@@ -1,11 +1,7 @@
 import React, { Component } from "react";
 // This will require to npm install axios
 import axios from 'axios';
-import {
-  Card, CardImg, CardText, CardBody,
-  CardTitle, CardSubtitle, Button, Modal, ModalHeader
-} from 'reactstrap';
-import { Link } from "react-router-dom";
+import { Button } from "reactstrap";
 
 const Record = (props) => (
   <tr>
@@ -13,17 +9,7 @@ const Record = (props) => (
     <td>{props.record.termDesc}</td>
     <td>{props.record.courseNumber}</td>
     <td>{props.record.subjectDescription}</td>
-    <td>
-      <Link to={"/edit/" + props.record._id}>Edit</Link> |
-      <a
-        href="/"
-        onClick={() => {
-          props.deleteRecord(props.record._id);
-        }}
-      >
-        Delete
-      </a>
-    </td>
+    <td>{props.record.creditHourSession}</td>    
   </tr>
 );
 
@@ -45,6 +31,18 @@ export default class RecordList extends Component {
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+  searchOpen(){
+    axios.get("http://localhost:5000/search").then((response) => {
+      console.log(response.data);
+      
+      this.setState({
+        record: response.data,
+    });
+    });
+    
+    
   }
 
   // This method will delete a record based on the method
@@ -70,12 +68,30 @@ export default class RecordList extends Component {
       );
     });
   }
-
   // This following section will display the table with the records of individuals.
   render() {
     return (
-      <div>
-        <h3>Course Catalog</h3>
+      <div class="outside_div">
+        <div class="row">
+          <div class="col-md-3">
+            <Button onClick={this.searchOpen}>Open Courses</Button>
+          <input type="search" class="form-control rounded" placeholder="Search ..." aria-label="Search"></input>
+          <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Elective</li>
+          <input type="checkbox" id="topping" name="topping" value="Open" /> Open Courses 
+
+            <div class="class_times bg-primary border border-dark rounded">
+              <p>Class Times</p>
+              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Monday</li>
+              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Tuesday</li>
+              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Wednesday</li>
+              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Thursday</li>
+              <li><input type="checkbox" id="topping" name="topping" value="Elective" /> Friday</li>
+              <button></button>
+            </div>
+          </div>
+          <div class="col-md-9">
+          
+          <h3>Course Catalog</h3>
         <table className="table table-striped" style={{ marginTop: 20 }}>
           <thead>
             <tr>
@@ -85,9 +101,13 @@ export default class RecordList extends Component {
               <th>Department</th>
             </tr>
           </thead>
+          
           <tbody>{this.recordList()}</tbody>
         </table>
+          </div>
+        </div>
       </div>
     );
   }
 }
+

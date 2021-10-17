@@ -13,16 +13,16 @@ import Home from "./components/Home";
 const App = () => {
   return (
     <div>
-      <Navbar />
+      
       <Route exact path="/">
-        <RecordList />
+        <Home />
       </Route>
       <Route path="/edit/:id" component={Edit} />
       <Route path="/create">
         <Create />
       </Route>
-      <Route path="/home">
-        <Home />
+      <Route path="/recordList">
+        <RecordList/>
       </Route>
     </div>
   );

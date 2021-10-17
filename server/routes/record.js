@@ -24,6 +24,51 @@ recordRoutes.route("/record").get(function (req, res) {
     });
 });
 
+recordRoutes.route("/searchelective").get(function (req, res) {
+  let db_connect = dbo.getDb("employees");
+  db_connect
+    .collection("records")
+    .find()
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
+
+recordRoutes.route("/need").get(function (req, res) {
+  let db_connect = dbo.getDb("employees");
+  db_connect
+    .collection("need")
+    .find({openSection: true})
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
+recordRoutes.route("/student").get(function (req, res) {
+  let db_connect = dbo.getDb("employees");
+  db_connect
+    .collection("students")
+    .find({})
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
+recordRoutes.route("/planned").get(function (req, res) {
+  let db_connect = dbo.getDb("employees");
+  db_connect
+    .collection("planned")
+    .find({})
+    .toArray(function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    });
+});
+
 // This section will help you get a single record by id
 recordRoutes.route("/record/:id").get(function (req, res) {
   let db_connect = dbo.getDb();
