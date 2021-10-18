@@ -10,7 +10,7 @@ const Home = () => {
   return (
     <div>
     <nav class="navbar">
-        <a class="navbar-brand" onClick={() => { history.push('/status') }}>
+        <a class="navbar-brand" onClick={() => { history.push('/') }}>
             <img src="./img/bulldog.png" width="150" height="100" alt=""/>
             <img src="./img/gonzaga_logo.png" width="300" height="100" alt=""/>
           </a>
@@ -18,7 +18,7 @@ const Home = () => {
 
     <div class="list-group center">
         
-        <button type="button" class="btn btn-primary" >
+        <button type="button" class="btn btn-primary" onClick={() => { history.push('/status') }}>
             <div class="float-left">
                 <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-bookmark-check" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>

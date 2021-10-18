@@ -17,18 +17,18 @@ recordRoutes.route("/record").get(function (req, res) {
   let db_connect = dbo.getDb("employees");
   db_connect
     .collection("records")
-    .find({})
+    .find()
     .toArray(function (err, result) {
       if (err) throw err;
       res.json(result);
     });
 });
 
-recordRoutes.route("/searchelective").get(function (req, res) {
+recordRoutes.route("/searchElective").get(function (req, res) {
   let db_connect = dbo.getDb("employees");
   db_connect
     .collection("records")
-    .find()
+    .find({"openSection" : true})
     .toArray(function (err, result) {
       if (err) throw err;
       res.json(result);
